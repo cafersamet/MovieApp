@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/drawable/rounded_image_background.xml" value="0.1" />
         <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/main_fragment.xml" value="0.1" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/main_fragment.xml" value="0.128" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/up_coming_item.xml" value="0.536" />
       </map>
     </option>
   </component>
