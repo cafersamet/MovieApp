@@ -2,21 +2,36 @@ package com.gllce.mobilliummovieapp.service
 
 import com.gllce.mobilliummovieapp.model.Movie
 import com.gllce.mobilliummovieapp.model.NowPlaying
-import com.gllce.mobilliummovieapp.model.Upcoming
-import io.reactivex.Single
+import com.gllce.mobilliummovieapp.model.UpComing
+import com.gllce.mobilliummovieapp.util.Resource
 import javax.inject.Inject
 
 class MovieApiRepository @Inject constructor(private val movieApi: MovieApi) {
 
-    fun getUpComingMovies(): Single<Upcoming> {
-        return movieApi.getUpComingMovies()
+    suspend fun getUpComingMovies(): Resource<UpComing> {
+        val response = try {
+            movieApi.getUpComingMovies(1)
+        } catch (e: Exception) {
+            return Resource.Error("Error while getting UpComingMovies")
+        }
+        return Resource.Success(response)
     }
 
-    fun getNowPlayingMovies(): Single<NowPlaying> {
-        return movieApi.getNowPlayingMovies()
+    suspend fun getNowPlayingMovies(): Resource<NowPlaying> {
+        val response = try {
+            movieApi.getNowPlayingMovies(1)
+        } catch (e: Exception) {
+            return Resource.Error("Error while getting NowPlayingMovies")
+        }
+        return Resource.Success(response)
     }
 
-    fun getMovieDetail(): Single<Movie> {
-        return movieApi.getMovieDetail()
+    suspend fun getMovieDetail(): Resource<Movie> {
+        val response = try {
+            movieApi.getMovieDetail(550)
+        } catch (e: Exception) {
+            return Resource.Error("Error while getting MovieDetail")
+        }
+        return Resource.Success(response)
     }
 }

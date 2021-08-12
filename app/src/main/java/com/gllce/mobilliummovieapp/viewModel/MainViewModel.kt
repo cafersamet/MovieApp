@@ -2,97 +2,60 @@ package com.gllce.mobilliummovieapp.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gllce.mobilliummovieapp.model.Movie
+import androidx.lifecycle.viewModelScope
 import com.gllce.mobilliummovieapp.model.NowPlaying
-import com.gllce.mobilliummovieapp.model.Upcoming
+import com.gllce.mobilliummovieapp.model.UpComing
 import com.gllce.mobilliummovieapp.service.MovieApiRepository
+import com.gllce.mobilliummovieapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val movieApiRepository: MovieApiRepository
 ) : ViewModel() {
-    val upComingMovies = MutableLiveData<List<Upcoming>>()
-    val nowPlayingMovies = MutableLiveData<List<NowPlaying>>()
+    val upComingMovies = MutableLiveData<UpComing>()
+    val nowPlayingMovies = MutableLiveData<NowPlaying>()
 
-    private val disposable = CompositeDisposable()
+    init {
+        refreshData()
+    }
 
     fun refreshData() {
         getUpComingMovies()
         getNowPlayingMovies()
-        getMovieDetail()
-    }
-
-    private fun getMovieDetail() {
-        disposable.add(
-            movieApiRepository.getMovieDetail()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<Movie>() {
-                    override fun onSuccess(t: Movie) {
-                        println(
-                            "onSuccess"
-                        )
-                    }
-
-                    override fun onError(e: Throwable) {
-                        println(
-                            "onError"
-                        )
-                    }
-                })
-        )
     }
 
     private fun getUpComingMovies() {
-        disposable.add(
-            movieApiRepository.getUpComingMovies()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<Upcoming>() {
-                    override fun onSuccess(t: Upcoming) {
-                        println(
-                            "onSuccess"
-                        )
-                    }
-
-                    override fun onError(e: Throwable) {
-                        println(
-                            "onError"
-                        )
-                    }
-                })
-        )
+        viewModelScope.launch {
+            when (val result = movieApiRepository.getUpComingMovies()) {
+                is Resource.Success -> {
+                    upComingMovies.value = result.data!!
+                }
+                is Resource.Error -> {
+                    TODO()
+                }
+                is Resource.Loading -> {
+                    TODO()
+                }
+            }
+        }
     }
 
     private fun getNowPlayingMovies() {
-        disposable.add(
-            movieApiRepository.getNowPlayingMovies()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<NowPlaying>() {
-                    override fun onSuccess(t: NowPlaying) {
-                        println(
-                            "onSuccess"
-                        )
-                    }
-
-                    override fun onError(e: Throwable) {
-                        println(
-                            "onError"
-                        )
-                    }
-                })
-        )
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposable.clear()
+        viewModelScope.launch {
+            when (val result = movieApiRepository.getNowPlayingMovies()) {
+                is Resource.Success -> {
+                    nowPlayingMovies.value = result.data!!
+                }
+                is Resource.Error -> {
+                    TODO()
+                }
+                is Resource.Loading -> {
+                    TODO()
+                }
+            }
+        }
     }
 }

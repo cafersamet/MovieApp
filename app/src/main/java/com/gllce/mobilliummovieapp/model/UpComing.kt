@@ -1,6 +1,6 @@
 package com.gllce.mobilliummovieapp.model
 
-data class Upcoming(
+data class UpComing(
     val dates: Dates,
     val page: Int,
     val results: List<Movie>,

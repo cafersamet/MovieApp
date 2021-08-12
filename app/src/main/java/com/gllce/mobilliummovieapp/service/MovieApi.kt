@@ -2,8 +2,7 @@ package com.gllce.mobilliummovieapp.service
 
 import com.gllce.mobilliummovieapp.model.Movie
 import com.gllce.mobilliummovieapp.model.NowPlaying
-import com.gllce.mobilliummovieapp.model.Upcoming
-import io.reactivex.Single
+import com.gllce.mobilliummovieapp.model.UpComing
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -13,17 +12,17 @@ interface MovieApi {
     // Base_Url -> https://api.themoviedb.org/3/movie/
 
     @GET("{id}")
-    fun getMovieDetail(
+    suspend fun getMovieDetail(
         @Path("id") id: Int
-    ): Single<Movie>
+    ): Movie
 
     @GET("upcoming")
-    fun getUpComingMovies(
+    suspend fun getUpComingMovies(
         @Query("page") page: Int,
-    ): Single<Upcoming>
+    ): UpComing
 
     @GET("now_playing")
-    fun getNowPlayingMovies(
+    suspend fun getNowPlayingMovies(
         @Query("page") page: Int,
-    ): Single<NowPlaying>
+    ): NowPlaying
 }
