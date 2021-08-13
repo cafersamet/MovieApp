@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
+        android:onClick="@{(view) -> clickListener.onItemClicked(view,movie.id)}"
         android:focusable="true">
 
         <ImageView
@@ -24,7 +25,6 @@
             android:layout_height="match_parent"
             android:contentDescription="Slider Image"
             android:downloadPath="@{movie.backdrop_path}"
-            android:onClick="@{(view) -> clickListener.onItemClicked(view,movie.id)}"
             android:scaleType="centerCrop" />
 
 

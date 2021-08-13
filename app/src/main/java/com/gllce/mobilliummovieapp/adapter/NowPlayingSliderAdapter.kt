@@ -35,6 +35,7 @@ class NowPlayingSliderAdapter(private val nowPlayingMovies: ArrayList<Movie>) :
 
     override fun onBindViewHolder(viewHolder: NowPlayingViewHolder, position: Int) {
         viewHolder.view.movie = nowPlayingMovies[position]
+        viewHolder.view.clickListener = this
     }
 
     override fun getCount(): Int {

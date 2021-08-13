@@ -17,6 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="140dp"
+        android:onClick="@{(view) -> clickListener.onItemClicked(view,movie.id)}"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
@@ -98,7 +99,6 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:onClick="@{(view) -> clickListener.onItemClicked(view,movie.id)}"
                     android:src="@drawable/arrow_right_24" />
             </LinearLayout>
 
