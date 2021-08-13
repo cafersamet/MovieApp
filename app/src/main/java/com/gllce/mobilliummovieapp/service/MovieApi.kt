@@ -3,6 +3,7 @@ package com.gllce.mobilliummovieapp.service
 import com.gllce.mobilliummovieapp.model.Movie
 import com.gllce.mobilliummovieapp.model.NowPlaying
 import com.gllce.mobilliummovieapp.model.UpComing
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -14,15 +15,15 @@ interface MovieApi {
     @GET("{id}")
     suspend fun getMovieDetail(
         @Path("id") id: Int
-    ): Movie
+    ): Response<Movie>
 
     @GET("upcoming")
     suspend fun getUpComingMovies(
         @Query("page") page: Int,
-    ): UpComing
+    ): Response<UpComing>
 
     @GET("now_playing")
     suspend fun getNowPlayingMovies(
         @Query("page") page: Int,
-    ): NowPlaying
+    ): Response<NowPlaying>
 }

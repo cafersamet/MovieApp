@@ -25,6 +25,11 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let {
+            println("Movie ID: " + DetailFragmentArgs.fromBundle(it).movieId)
+        }
+
         observeLiveData()
     }
 

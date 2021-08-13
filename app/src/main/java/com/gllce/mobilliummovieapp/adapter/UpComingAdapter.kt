@@ -4,12 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gllce.mobilliummovieapp.R
 import com.gllce.mobilliummovieapp.databinding.UpComingItemBinding
 import com.gllce.mobilliummovieapp.model.Movie
+import com.gllce.mobilliummovieapp.view.MainFragmentDirections
 
-class UpComingAdapter(private val upComingMovies: ArrayList<Movie>) :
+class UpComingAdapter :
     RecyclerView.Adapter<UpComingAdapter.UpComingViewHolder>(), ItemClickListener {
 
     class UpComingViewHolder(var view: UpComingItemBinding) : RecyclerView.ViewHolder(view.root)
@@ -26,24 +30,35 @@ class UpComingAdapter(private val upComingMovies: ArrayList<Movie>) :
     }
 
     override fun onBindViewHolder(holder: UpComingViewHolder, position: Int) {
-        holder.view.movie = upComingMovies[position]
+        holder.view.movie = differ.currentList[position]
         holder.view.clickListener = this
     }
 
-    fun updateList(newList: List<Movie>) {
-        upComingMovies.clear()
-        upComingMovies.addAll(newList)
-        notifyDataSetChanged()
+    fun submitList(list: MutableList<Movie>) {
+        val x = mutableListOf<Movie>().apply {
+            addAll(list)
+        }
+        differ.submitList(x)
     }
 
     override fun getItemCount(): Int {
-        return upComingMovies.size
+        return differ.currentList.size
     }
 
-    override fun onItemClicked(v: View) {
-        println("item clicked")
-        /* val uuid = v.countryUuidText.text.toString().toInt();
-         val action = FeedFragmentDirections.actionFeedFragment2ToCountryFragment2(uuid)
-         Navigation.findNavController(v).navigate(action)*/
+    private val differCallback = object : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem == newItem
+        }
+    }
+    private val differ = AsyncListDiffer(this, differCallback)
+
+    override fun onItemClicked(v: View, id: Int) {
+        println("item clicked upcoming")
+        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(id)
+        Navigation.findNavController(v).navigate(action)
     }
 }

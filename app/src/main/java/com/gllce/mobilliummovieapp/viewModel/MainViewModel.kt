@@ -1,5 +1,6 @@
 package com.gllce.mobilliummovieapp.viewModel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,55 +8,83 @@ import com.gllce.mobilliummovieapp.model.NowPlaying
 import com.gllce.mobilliummovieapp.model.UpComing
 import com.gllce.mobilliummovieapp.service.MovieApiRepository
 import com.gllce.mobilliummovieapp.util.Resource
+import com.gllce.mobilliummovieapp.util.isOnline
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val movieApiRepository: MovieApiRepository
 ) : ViewModel() {
-    val upComingMovies = MutableLiveData<UpComing>()
-    val nowPlayingMovies = MutableLiveData<NowPlaying>()
+    var upComingPage = 1
+    val upComingMovies: MutableLiveData<Resource<UpComing>> = MutableLiveData()
+    var upComingResponse: UpComing? = null
+
+    val nowPlayingMovies: MutableLiveData<Resource<NowPlaying>> = MutableLiveData()
 
     init {
-        refreshData()
+        refreshData(true)
     }
 
-    fun refreshData() {
+    fun refreshData(isRefresh: Boolean) {
+        if (isRefresh) {
+            upComingPage = 1
+        }
         getUpComingMovies()
         getNowPlayingMovies()
     }
 
     private fun getUpComingMovies() {
         viewModelScope.launch {
-            when (val result = movieApiRepository.getUpComingMovies()) {
-                is Resource.Success -> {
-                    upComingMovies.value = result.data!!
+            upComingMovies.postValue(Resource.Loading())
+            if (!isOnline(context)) {
+                upComingMovies.postValue(Resource.Error("No Internet Connection"))
+                return@launch
+            }
+            val response = movieApiRepository.getUpComingMovies(upComingPage)
+            upComingMovies.postValue(handleUpComingMoviesResponse(response))
+        }
+    }
+
+    private fun handleUpComingMoviesResponse(response: Response<UpComing>): Resource<UpComing>? {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                if (upComingResponse == null || upComingPage == 1) {
+                    upComingResponse = resultResponse
+                } else {
+                    val oldMovies = upComingResponse?.results
+                    val newMovies = resultResponse.results
+                    oldMovies?.addAll(newMovies)
                 }
-                is Resource.Error -> {
-                    TODO()
-                }
-                is Resource.Loading -> {
-                    TODO()
-                }
+                upComingPage++
+                return Resource.Success(upComingResponse ?: resultResponse)
             }
         }
+        return Resource.Error(response.message())
     }
 
     private fun getNowPlayingMovies() {
         viewModelScope.launch {
-            when (val result = movieApiRepository.getNowPlayingMovies()) {
-                is Resource.Success -> {
-                    nowPlayingMovies.value = result.data!!
-                }
-                is Resource.Error -> {
-                    TODO()
-                }
-                is Resource.Loading -> {
-                    TODO()
-                }
+            nowPlayingMovies.postValue(Resource.Loading())
+            if (!isOnline(context)) {
+                nowPlayingMovies.postValue(Resource.Error("No Internet Connection"))
+                return@launch
+            }
+            val response = movieApiRepository.getNowPlayingMovies(1)
+            nowPlayingMovies.postValue(handleNowPlayingMoviesResponse(response))
+        }
+    }
+
+    private fun handleNowPlayingMoviesResponse(response: Response<NowPlaying>): Resource<NowPlaying>? {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
             }
         }
+        return Resource.Error(response.message())
     }
 }

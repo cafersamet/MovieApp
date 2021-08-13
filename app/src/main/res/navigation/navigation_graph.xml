@@ -18,10 +18,13 @@
         android:id="@+id/detailFragment"
         android:name="com.gllce.mobilliummovieapp.view.DetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/detail_fragment" >
+        tools:layout="@layout/detail_fragment">
         <action
             android:id="@+id/action_detailFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
-        <argument android:name="movie_id" />
+        <argument
+            android:name="movie_id"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
 </navigation>

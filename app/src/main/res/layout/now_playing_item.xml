@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.gllce.mobilliummovieapp.model.Movie" />
+
+        <variable
+            name="clickListener"
+            type="com.gllce.mobilliummovieapp.adapter.ItemClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="Slider Image"
+            android:downloadPath="@{movie.backdrop_path}"
+            android:onClick="@{(view) -> clickListener.onItemClicked(view,movie.id)}"
+            android:scaleType="centerCrop" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
