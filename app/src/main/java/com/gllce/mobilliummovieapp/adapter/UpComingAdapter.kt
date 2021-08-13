@@ -56,9 +56,9 @@ class UpComingAdapter :
     }
     private val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onItemClicked(v: View, id: Int) {
+    override fun onItemClicked(v: View, id: String) {
         println("item clicked upcoming")
-        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(id)
+        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(id.toInt())
         Navigation.findNavController(v).navigate(action)
     }
 }

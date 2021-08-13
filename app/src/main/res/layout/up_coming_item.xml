@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:onClick="@{(view) -> clickListener.onItemClicked(view,movie.id)}"
+        android:onClick="@{(view) -> clickListener.onItemClicked(view,String.valueOf(movie.id))}"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
@@ -34,7 +34,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:contentDescription="Movie Image"
-                android:downloadPath="@{movie.poster_path}"
+                android:downloadSmallImage="@{movie.poster_path}"
                 android:scaleType="centerCrop" />
 
         </androidx.cardview.widget.CardView>
@@ -66,9 +66,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:lines="1"
-                    android:text="@{movie.original_title}"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:fontFamily=""
+                    android:text="@{movie.title}"
+                    android:textColor="@color/titleColor"
+                    android:textSize="@dimen/title_text_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -76,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:text="@{movie.overview}"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/overview_text_size" />
 
 
             </LinearLayout>

@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(
         getNowPlayingMovies()
     }
 
-    private fun getUpComingMovies() {
+    fun getUpComingMovies() {
         viewModelScope.launch {
             upComingMovies.postValue(Resource.Loading())
             if (!isOnline(context)) {
@@ -67,7 +67,7 @@ class MainViewModel @Inject constructor(
         return Resource.Error(response.message())
     }
 
-    private fun getNowPlayingMovies() {
+    fun getNowPlayingMovies() {
         viewModelScope.launch {
             nowPlayingMovies.postValue(Resource.Loading())
             if (!isOnline(context)) {

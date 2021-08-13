@@ -78,7 +78,7 @@ class MainFragment : Fragment() {
             val shouldPaginate =
                 isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.refreshData(false)
+                viewModel.getUpComingMovies()
                 isScrolling = false
             }
         }

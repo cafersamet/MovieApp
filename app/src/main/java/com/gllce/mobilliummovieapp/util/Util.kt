@@ -16,14 +16,23 @@ private const val IMAGE_DOWNLOAD_URL_original = "https://image.tmdb.org/t/p/orig
 
 const val QUERY_PAGE_SIZE = 20
 
-fun ImageView.downloadPath(path: String?, progressDrawable: CircularProgressDrawable) {
+fun ImageView.downloadPath(
+    path: String?,
+    progressDrawable: CircularProgressDrawable,
+    isOriginal: Boolean
+) {
     val options = RequestOptions.placeholderOf(progressDrawable)
         .error(R.drawable.ic_launcher_foreground)
+
+    var url = IMAGE_DOWNLOAD_URL_w500
+    if (isOriginal) {
+        url = IMAGE_DOWNLOAD_URL_original
+    }
 
     Glide
         .with(context)
         .setDefaultRequestOptions(options)
-        .load(IMAGE_DOWNLOAD_URL_w500 + path)
+        .load(url + path)
         .into(this)
 }
 
@@ -35,9 +44,14 @@ fun placeholderProgressBar(context: Context): CircularProgressDrawable {
     }
 }
 
-@BindingAdapter("android:downloadPath")
+@BindingAdapter("android:downloadSmallImage")
 fun downloadPath(view: ImageView, path: String?) {
-    view.downloadPath(path, placeholderProgressBar(view.context))
+    view.downloadPath(path, placeholderProgressBar(view.context), false)
+}
+
+@BindingAdapter("android:downloadOriginalImage")
+fun downloadOriginalImage(view: ImageView, path: String?) {
+    view.downloadPath(path, placeholderProgressBar(view.context), true)
 }
 
 fun isOnline(context: Context): Boolean {
