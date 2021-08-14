@@ -3,11 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/drawable/layout_border.xml" value="0.22962962962962963" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/drawable/no_data_24.xml" value="0.165625" />
         <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/drawable/rounded_image_background.xml" value="0.1" />
         <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/activity_main.xml" value="0.152" />
-        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/detail_fragment.xml" value="0.8" />
-        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/main_fragment.xml" value="0.1" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/detail_fragment.xml" value="0.152" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/empty_layout.xml" value="0.152" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/error_layout.xml" value="0.2" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/loading_layout.xml" value="0.176" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/main_fragment.xml" value="0.136" />
         <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/now_playing_item.xml" value="0.1" />
+        <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/up_coming_constraint_layout.xml" value="0.19322916666666667" />
         <entry key="..\:/Projects/KotlinProjects/MobilliumMovieApp/app/src/main/res/layout/up_coming_item.xml" value="0.1" />
       </map>
     </option>

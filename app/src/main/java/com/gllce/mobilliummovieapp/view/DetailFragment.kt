@@ -16,6 +16,8 @@ import com.gllce.mobilliummovieapp.databinding.DetailFragmentBinding
 import com.gllce.mobilliummovieapp.util.Resource
 import com.gllce.mobilliummovieapp.viewModel.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.detail_fragment.*
+import kotlinx.android.synthetic.main.error_layout.view.*
 
 @AndroidEntryPoint
 class DetailFragment : Fragment(), ItemClickListener {
@@ -42,27 +44,33 @@ class DetailFragment : Fragment(), ItemClickListener {
         dataBinding.clickListener = this
         viewModel.getMovieDetail(movieId)
         observeLiveData()
+
+        detailErrorLayout.retry_button.setOnClickListener {
+            viewModel.getMovieDetail(movieId)
+        }
     }
 
     private fun observeLiveData() {
         viewModel.movieDetail.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    hideAllViews()
                     println("Success")
                     response.data?.let { movie ->
-                        println("nowPlaying observeLiveData")
+                        println("detail observeLiveData")
                         dataBinding.movie = movie
+                    }
+                    if (dataBinding.movie == null) {
+                        showEmptyView()
                     }
                 }
                 is Resource.Loading -> {
-
-                    //showProgressBar()
-                    println("nowPlaying Loading")
+                    showLoadingView()
+                    println("detail Loading")
                 }
                 is Resource.Error -> {
-                    //hideProgressBar()
-                    println("nowPlaying Error")
+                    showErrorView()
+                    println("detail Error")
                     response.message?.let { message ->
                         Toast.makeText(context, "An error occurred: $message", Toast.LENGTH_LONG)
                             .show()
@@ -84,6 +92,33 @@ class DetailFragment : Fragment(), ItemClickListener {
         b.putBoolean("new_window", true)
         intents.putExtras(b)
         context?.startActivity(intents)
+    }
+
+    private fun showEmptyView() {
+        detailLoadingLayout.visibility = View.GONE
+        detailErrorLayout.visibility = View.GONE
+        detailEmptyLayout.visibility = View.VISIBLE
+        detailScrollView.visibility = View.GONE
+    }
+
+    private fun showErrorView() {
+        detailLoadingLayout.visibility = View.GONE
+        detailEmptyLayout.visibility = View.GONE
+        detailErrorLayout.visibility = View.VISIBLE
+        detailScrollView.visibility = View.GONE
+    }
+
+    private fun showLoadingView() {
+        detailEmptyLayout.visibility = View.GONE
+        detailErrorLayout.visibility = View.GONE
+        detailLoadingLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideAllViews() {
+        detailLoadingLayout.visibility = View.GONE
+        detailErrorLayout.visibility = View.GONE
+        detailEmptyLayout.visibility = View.GONE
+        detailScrollView.visibility = View.VISIBLE
     }
 
 }

@@ -29,8 +29,7 @@ fun ImageView.downloadPath(
         url = IMAGE_DOWNLOAD_URL_original
     }
 
-    Glide
-        .with(context)
+    Glide.with(context)
         .setDefaultRequestOptions(options)
         .load(url + path)
         .into(this)
@@ -45,7 +44,7 @@ fun placeholderProgressBar(context: Context): CircularProgressDrawable {
 }
 
 @BindingAdapter("android:downloadSmallImage")
-fun downloadPath(view: ImageView, path: String?) {
+fun downloadSmallImage(view: ImageView, path: String?) {
     view.downloadPath(path, placeholderProgressBar(view.context), false)
 }
 
