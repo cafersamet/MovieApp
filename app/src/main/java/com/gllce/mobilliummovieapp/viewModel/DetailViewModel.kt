@@ -1,22 +1,21 @@
 package com.gllce.mobilliummovieapp.viewModel
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gllce.mobilliummovieapp.model.Movie
 import com.gllce.mobilliummovieapp.service.MovieApiRepository
 import com.gllce.mobilliummovieapp.util.Resource
-import com.gllce.mobilliummovieapp.util.isOnline
+import com.gllce.mobilliummovieapp.util.isNetworkConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    @ApplicationContext val context: Context,
+    private val application: Application,
     private val movieApiRepository: MovieApiRepository
 ) : ViewModel() {
     val movieDetail: MutableLiveData<Resource<Movie>> = MutableLiveData()
@@ -24,7 +23,7 @@ class DetailViewModel @Inject constructor(
     fun getMovieDetail(id: Int) {
         viewModelScope.launch {
             movieDetail.postValue(Resource.Loading())
-            if (!isOnline(context)) {
+            if (!isNetworkConnected(application.applicationContext)) {
                 movieDetail.postValue(Resource.Error("No Internet Connection"))
                 return@launch
             }

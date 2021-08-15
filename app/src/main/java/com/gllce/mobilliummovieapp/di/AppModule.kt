@@ -2,6 +2,7 @@ package com.gllce.mobilliummovieapp.di
 
 import android.content.Context
 import com.gllce.mobilliummovieapp.service.MovieApi
+import com.gllce.mobilliummovieapp.service.MovieApiRepository
 import com.gllce.mobilliummovieapp.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideMovieRepository(api: MovieApi): MovieApiRepository {
+        return MovieApiRepository(api)
+    }
 
     @Singleton
     @Provides

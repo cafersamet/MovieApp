@@ -53,7 +53,7 @@ fun downloadOriginalImage(view: ImageView, path: String?) {
     view.downloadPath(path, placeholderProgressBar(view.context), true)
 }
 
-fun isOnline(context: Context): Boolean {
+fun isNetworkConnected(context: Context): Boolean {
     val conManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val internetInfo = conManager.activeNetworkInfo
     return internetInfo != null && internetInfo.isConnected

@@ -3,6 +3,7 @@ package com.gllce.mobilliummovieapp.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class DetailFragment : Fragment(), ItemClickListener {
     private var movieId: Int = 0
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var dataBinding: DetailFragmentBinding
+    private val TAG = "DetailFragment"
 
 
     override fun onCreateView(
@@ -39,13 +41,13 @@ class DetailFragment : Fragment(), ItemClickListener {
 
         arguments?.let {
             movieId = DetailFragmentArgs.fromBundle(it).movieId
-            println("Movie ID: $movieId")
+            Log.i(TAG, "Movie ID: $movieId")
         }
         dataBinding.clickListener = this
         viewModel.getMovieDetail(movieId)
         observeLiveData()
 
-        detailErrorLayout.retry_button.setOnClickListener {
+        detailErrorLayout.errorRetryButton.setOnClickListener {
             viewModel.getMovieDetail(movieId)
         }
     }
@@ -55,9 +57,8 @@ class DetailFragment : Fragment(), ItemClickListener {
             when (response) {
                 is Resource.Success -> {
                     hideAllViews()
-                    println("Success")
                     response.data?.let { movie ->
-                        println("detail observeLiveData")
+                        Log.i(TAG, "detail observeLiveData")
                         dataBinding.movie = movie
                     }
                     if (dataBinding.movie == null) {
@@ -66,18 +67,17 @@ class DetailFragment : Fragment(), ItemClickListener {
                 }
                 is Resource.Loading -> {
                     showLoadingView()
-                    println("detail Loading")
+                    Log.i(TAG, "detail Loading")
                 }
                 is Resource.Error -> {
                     showErrorView()
-                    println("detail Error")
+                    Log.i(TAG, "detail Error")
                     response.message?.let { message ->
                         Toast.makeText(context, "An error occurred: $message", Toast.LENGTH_LONG)
                             .show()
                     }
                 }
             }
-
         })
     }
 
@@ -120,5 +120,4 @@ class DetailFragment : Fragment(), ItemClickListener {
         detailEmptyLayout.visibility = View.GONE
         detailScrollView.visibility = View.VISIBLE
     }
-
 }
